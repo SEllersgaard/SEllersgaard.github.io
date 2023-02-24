@@ -22,7 +22,7 @@ full spectrum of financial engineering; from the model driven pricing of exotics
 the data-driven extraction of alpha-capturing signals. Professional interests gravitate
 towards the exploration and integration of classical time series econometrics
 and modern-day machine learning to facilitate optimal quantamental trading (signal
-research / portfolio construction). Strong proponent of the scientific process.
+research / portfolio construction). Strong proponent of the scientific process. Yup.
 
 <!--
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
