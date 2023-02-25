@@ -1,12 +1,8 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - SEllersgaard
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - SEllersgaard/Stats
+  - SEllersgaard/NumericalMerton
+  - SEllersgaard/Covid19
+  - SEllersgaard/Hedging

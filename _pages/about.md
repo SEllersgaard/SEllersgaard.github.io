@@ -24,6 +24,13 @@ towards the exploration and integration of classical time series econometrics
 and modern-day machine learning to facilitate optimal quantamental trading (signal
 research / portfolio construction). Strong proponent of the scientific process. 
 
+## important disclaimer
+
+Everything displayed on this website, including the blog, is my own private work. 
+Nothing whatsoever overlaps with the work I do professionally. No IP will ever be disseminated here. 
+Obviously nothing on this site constitutes trading advice. I do not accept any liability for trading losses you may incur. 
+
+
 <!--
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
 
