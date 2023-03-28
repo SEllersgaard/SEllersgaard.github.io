@@ -495,13 +495,14 @@ $$
 \boldsymbol{\pi}_{\text{minvar}} = \frac{\boldsymbol{\Sigma}^{-1} \boldsymbol{1}}{ \boldsymbol{1}^\intercal \boldsymbol{\Sigma}^{-1} \boldsymbol{1}},
 $$
 
-actually delivers a smaller variance than the $$1/K$$ benchmark. Similarly whether (II) the maximum sharpe ratio portfolio[^2]:
+actually delivers a smaller variance than the $$1/K$$ benchmark. For reference: $$ \boldsymbol{\pi}_{\text{maxshp}} \approx (0.32,  0.00,  0.31 ,  0.38, -0.01)$$.
+Similarly whether (II) the maximum sharpe ratio portfolio[^2]:
 
 $$
 \boldsymbol{\pi}_{\text{maxshp}} = \frac{\boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}-r\boldsymbol{1})}{ \boldsymbol{1}^\intercal \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}-r\boldsymbol{1})},
 $$
 
-actually delivers a higher Sharpe ratio than the $$1/K$$ benchmark. 
+actually delivers a higher Sharpe ratio than the $$1/K$$ benchmark. For reference: $$ \boldsymbol{\pi}_{\text{maxshp}} \approx (0.34, 0.14, 0.14, 0.33, 0.05)$$.
 
 To analyse these questions, consider the following experimental set-up: Using simulated data we will run 
 five [self-financing portfolios](https://en.wikipedia.org/wiki/Self-financing_portfolio) for 10 years, each starting with a million dollar notational. The five strategies under scrutiny are:
@@ -511,7 +512,7 @@ All estimated quantities will be based on at least ten years' worth of history a
 At the end all portfolios will have their variance and Sharpe ratio computed. As usual, we'll repeat
 this entire process 1000 times.  
 
-For a given matrix of simulated returns, the following function computes the wealth paths of the five strategies:
+For a given matrix of simulated returns, the following function computes the wealth paths of the five strategies.
 
 ```python
 π_eql = np.ones(M)/M #equally weighted portfolio
@@ -570,10 +571,10 @@ properties of the optimal portfolios *less* the $$1/K$$ benchmark:
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>minvar-equal</th>
-      <th>minvar_est-equal</th>
-      <th>sharpe-equal</th>
-      <th>sharpe_est-equal</th>
+      <th> $$\sigma(\boldsymbol{\pi}_{\text{minvar}})-\sigma(\boldsymbol{\pi}_{1/K} )$$ </th>
+      <th> $$\sigma(\hat{\boldsymbol{\pi}}_{\text{minvar}})-\sigma(\boldsymbol{\pi}_{1/K} )$$ </th>
+      <th> $$Shp(\boldsymbol{\pi}_{\text{maxshp}})-Shp(\boldsymbol{\pi}_{1/K} )$$ </th>
+      <th> $$Shp(\hat{\boldsymbol{\pi}}_{\text{maxshp}})-Shp(\boldsymbol{\pi}_{1/K} )$$ </th>
     </tr>
   </thead>
   <tbody>
