@@ -495,7 +495,7 @@ $$
 \boldsymbol{\pi}_{\text{minvar}} = \frac{\boldsymbol{\Sigma}^{-1} \boldsymbol{1}}{ \boldsymbol{1}^\intercal \boldsymbol{\Sigma}^{-1} \boldsymbol{1}},
 $$
 
-actually delivers a smaller variance than the $$1/K$$ benchmark. For reference: $$ \boldsymbol{\pi}_{\text{maxshp}} \approx (0.32,  0.00,  0.31 ,  0.38, -0.01)$$.
+actually delivers a smaller variance than the $$1/K$$ benchmark. For reference: $$ \boldsymbol{\pi}_{\text{minvar}} \approx (0.32,  0.00,  0.31 ,  0.38, -0.01)$$.
 Similarly whether (II) the maximum sharpe ratio portfolio[^2]:
 
 $$
