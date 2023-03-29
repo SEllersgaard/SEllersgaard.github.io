@@ -73,8 +73,8 @@ Sharpe = (μ-r)/σ
 ```
 Finally, to simulate stock paths according to these inputs we can use the following vectorised function: 
 ```python
-def multi_brownian_sim(seed=False):
-    
+def multi_brownian_sim(seed: bool = False) -> Tuple[pd.DataFrame, pd.DataFrame]:
+
     if seed:
         np.random.seed(42)
     dW = pd.DataFrame(np.random.normal(0, sqdt, size=(M, N+1)))
@@ -83,10 +83,10 @@ def multi_brownian_sim(seed=False):
     ret.iloc[0] = S_0
     df = ret.cumprod() #levels
     dfr = (df.diff()/df.shift(1)).dropna() #returns 
-    
+
     return df, dfr
 ```
-A single run of this yields something along the lines below (when the random seed is fixed).  
+A single run of this yields something along the lines below:  
 
 {% include figure.html path="assets/img/brownian.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
 
@@ -430,11 +430,11 @@ $$C \equiv \boldsymbol{1}^\intercal \boldsymbol{\Sigma}^{-1} \boldsymbol{1}$$, a
 The function below allows us to visualise the efficient frontier for arbitrary $$\boldsymbol{\mu}$$, $$\boldsymbol{\Sigma}$$:
 
 ```python
-def plot_frontier(μ_est, Σ_est, ax=None, scatter=False, muc=0.3, alpha=0.5):
+def plot_frontier(μ_est: np.array, Σ_est: np.array, ax = None, scatter: bool = False, muc: float = 0.3, alpha: float = 0.5):
 
     σ_est = np.sqrt(np.diag(Σ_est))
     Σinv_est = np.linalg.inv(Σ_est)
-    
+
     A = μ_est@Σinv_est@μ_est
     B = μ_est@Σinv_est@I
     C = I@Σinv_est@I
@@ -446,7 +446,7 @@ def plot_frontier(μ_est, Σ_est, ax=None, scatter=False, muc=0.3, alpha=0.5):
 
     if ax == None:
         fig, ax = plt.subplots(1,1, figsize=(13,11))
-    
+
     ax.plot(sigbar, mubar, alpha=alpha)
     if scatter:
         ax.scatter(σ_est, μ_est)
@@ -519,7 +519,7 @@ For a given matrix of simulated returns, the following function computes the wea
 π_var = (Σinv@I)/(I@Σinv@I) #minimum variance portfolio
 π_shp = (Σinv@(μ-r))/(I@Σinv@(μ-r)) #optimal sharpe portfolio
 
-def wealth_path(dfr):
+def wealth_path(dfr: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
     col = ['W_equal', 'W_minvar', 'W_minvar_est', 'W_sharpe', 'W_sharpe_est',]
     t_test = np.arange(int(N/2),N+1)
@@ -530,7 +530,7 @@ def wealth_path(dfr):
 
     μ_hat_vec = dfr.expanding().mean()/dt
     Σ_hat_vec = dfr.expanding().cov()/dt
-    
+
     for ti, t in enumerate(t_test):
         if ti%7 == 0:
             μ_hat = μ_hat_vec.loc[t].values
@@ -546,18 +546,18 @@ def wealth_path(dfr):
             pass
         else:
             col_map = {
-            'W_equal': π_eql,
-            'W_minvar': π_var,
-            'W_minvar_est': pi_var_dic[t-1],
-            'W_sharpe': π_shp,
-            'W_sharpe_est': pi_shp_dic[t-1], 
+                'W_equal': π_eql,
+                'W_minvar': π_var,
+                'W_minvar_est': pi_var_dic[t-1],
+                'W_sharpe': π_shp,
+                'W_sharpe_est': pi_shp_dic[t-1],
             }
             for j in col:
                 dfw.at[t,j] = dfw.at[t-1,j]*(1 + col_map[j]@dfr.loc[t])
 
     pi_shp = pd.DataFrame.from_dict(pi_shp_dic, orient='index')
     pi_var = pd.DataFrame.from_dict(pi_var_dic, orient='index')
-    return dfw, pi_shp, pi_var   
+    return dfw, pi_shp, pi_var  
 ```
 
 Here's one such example, which in itself won't tell you much:
