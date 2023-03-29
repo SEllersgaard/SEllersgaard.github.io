@@ -411,7 +411,7 @@ $$
 $$
 
 i.e. the estimator is a [telescoping series](https://en.wikipedia.org/wiki/Telescoping_series) effectively determined 
-by the first and last entry. For "shorter" histories this can be extremely problematic. 
+by the first and last entry. For "shorter" histories this can be extremely problematic (noisy). 
 
 ### The final frontier?
 
