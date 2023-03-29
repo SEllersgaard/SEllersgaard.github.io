@@ -512,7 +512,7 @@ All estimated quantities will be based on at least ten years' worth of history a
 At the end all portfolios will have their variance and Sharpe ratio computed. As usual, we'll repeat
 this entire process 1000 times.  
 
-For a given matrix of simulated returns, the following function computes the wealth paths of the five strategies.
+For a given matrix of simulated returns, the following function computes the wealth paths of the five strategies:
 
 ```python
 π_eql = np.ones(M)/M #equally weighted portfolio
