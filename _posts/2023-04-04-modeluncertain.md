@@ -19,14 +19,14 @@ governed by millions of non-cooperating players, ultimately is explained through
 problem. Nobody would seriously entertain the view that these models are *fundamental* or *expressively adequate* in nature, 
 yet it is common practice to let just a single model guide the trading process based on some performance metric like the
 out-of-sample mean-squared error. This is potentially troubling given that a less accurate model need not be universally
-inferior in all of its predictions. Indeed, it is conceivable that some biases cancel each other out, if only we marry the predictions made by various models (see e.g. the work by [Jennifer Hoeting](https://en.wikipedia.org/wiki/Jennifer_A._Hoeting)).
+inferior in all of its predictions. Indeed, it is conceivable that some biases cancel each other out if only we marry the predictions made by various models (see e.g. the work by [Jennifer Hoeting](https://en.wikipedia.org/wiki/Jennifer_A._Hoeting)).
 This begs the question: how exactly do we combine said predictions? Intuitively, while simple linear averaging might work,
 the thought of attributing equal significance to models regardless of their level of performance is clearly distasteful. A somewhat subtler approach would be to weigh a prediction by the evidence of the model, and this is precisely what
 *Bayesian model averaging* sets out to do. In this piece I will provide an exegesis of this philosophy, and lay out what I
 consider to be serious obstacles and how to overcome them. 
 
 Let $$\boldsymbol{y}=(y_1, y_2, ..., y_N)^\intercal \in \mathbb{R}^{N}$$ be a vector of data observations, which we desire to model. 
-Furthermore, suppose we have $$K$$ competing models $$\mathbb{M} = \{M_1, M_2, ..., M_K \}$$ for $$\boldsymbol{y}$$, where each $$M_i$$ is characterised by some vector $$\boldsymbol{\theta}_i = 
+Furthermore, suppose we have $$K$$ competing models $$\mathbb{M} = \{M_1, M_2, ..., M_K \}$$ for $$\boldsymbol{y}$$, each of which is characterised by some vector $$\boldsymbol{\theta}_i = 
 (\theta_{i,1},\theta_{i,2}, ..., \theta_{i,T_i})^\intercal \in \boldsymbol{\Theta}_i \subseteq \mathbb{R}^{T_i}$$ of parameters.
 The candidate models could be [nested](https://www.theanalysisfactor.com/what-are-nested-models/)
 within the same super-model (e.g. all possible subsets of a multivariate linear regression), although this is *not* a requirement.  
@@ -104,9 +104,9 @@ where $$\text{BIC}(M_i) \equiv -2 \ell(\hat{\boldsymbol{\theta}}_i)) + T_i \log(
 a common measure used in identifying the "goodness of fit" of a model. Plugging this into \eqref{bayes} and taking a flat
 prior on the model space $$\mathbb{M}$$ we finally arrive at the following expression for data-driven model probabilities: 
 
-$$
+\begin{equation}\label{pm}
 p(M_i | \boldsymbol{y}) = \frac{e^{-\tfrac{1}{2}\text{BIC}(M_i)}}{ \sum_{j=1}^K e^{-\tfrac{1}{2}\text{BIC}(M_j)}}.
-$$
+\end{equation}
 
 Simply put: when all models have equal complexity we simply weigh their predictions based on their likelihood function.
 
@@ -119,7 +119,45 @@ This suggests that further work is warranted: here, I'll present a [Wittgenstein
 argument for what I think ought to be done.[^2] 
 
 Suppose we have some model $$M_i: \boldsymbol{y}_i = f(\boldsymbol{x}_i \vert \boldsymbol{\theta}_i) + \varepsilon_i$$ where
-$$\varepsilon_i \sim \mathcal{N}(0,\sigma^2)$$ is an i.i.d. error term. 
+$$\varepsilon_i \sim \mathcal{N}(0,\sigma^2)$$ is an i.i.d. error term. The likelihood function for this model can be written as
+
+$$
+L(\boldsymbol{\theta}_i) = \prod_{j=1}^N \frac{ e^{-\frac{(y_i - f(\boldsymbol{x}_i \vert \boldsymbol{\theta}_i))^2}{2\sigma^2}}}{\sqrt{2 \pi \sigma^2}},
+$$
+
+or in log-likelihood terms:
+
+$$
+\ell(\boldsymbol{\theta}_i) = - \frac{N}{2} \ln(2 \pi) - \frac{N}{2} \ln(\sigma^2) - \frac{1}{2\sigma_i^2} RSS_i,
+$$
+
+where $$RSS$$ is the [residual sum of sqaures](https://en.wikipedia.org/wiki/Residual_sum_of_squares). 
+Now $$\sigma^2 \approx RRS_i/N = MSE_i$$ (the mean squared error) so this expression boils down to
+
+$$
+\ell(\boldsymbol{\theta}_i) = -\frac{N}{2} \ln(MSE_i) + \text{terms depending on }N.
+$$
+
+Hence the Bayesian information criterion can be written as
+
+$$
+BIC(M_i) = \frac{N}{2} \ln(MSE_i) + T_i \log(N).
+$$
+
+This offers a nice (more familiar?) way of writing \eqref{pm}, with the caveat that we still have to deal with the annoying
+presence of the $$T_i$$ term. Now in practice what I would do is the following: It is well known that the BIC asymptotically 
+is equivalent to leave-of-$$\nu(N)$$ cross-validation (see [this reference](https://robjhyndman.com/hyndsight/crossvalidation/)).
+Rather than weighing predictions by their $$BIC$$-score I thus propose weighing them by their cross-validated mean square error. 
+Maybe something as simple as
+
+\begin{equation}\label{pm2}
+p(M_i | \boldsymbol{y}) = \frac{ MSE_{i,cv}^{-1} }{ \sum_{j=1}^K MSE_{j,cv}^{-1}}.
+\end{equation}
+
+The benefits of this are as follows: (a) it is extremely simple to calculate, and (b) no unfair advantage is given to over-fitting
+models. 
+
+I welcome alternative suggestions to this intensely fascinating subject. 
 
 
 
