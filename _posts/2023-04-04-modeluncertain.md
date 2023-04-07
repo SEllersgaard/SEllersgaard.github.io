@@ -112,17 +112,18 @@ Simply put: when all models have equal complexity we simply weigh their predicti
 
 ### Towards Generality
 
-If a data science practitioner is put off by Bayesian information criterions, likelihood functions etc. I wouldn't hold
-it against that person. While these concepts are prevalent within statistics, they are less ubiquitous amongst computer scientists: 
+If practitioners of data science are put off by Bayesian information criterions, likelihood functions etc. I wouldn't hold
+it against them. While these concepts are prevalent within statistics, they are less ubiquitous amongst computer scientists: 
 indeed, they may not even be well-defined for many of the machine learning models commonly employed today. 
 This suggests that further work is warranted: here, I'll present a [Wittgenstein's ladder](https://en.wikipedia.org/wiki/Wittgenstein%27s_ladder)-type
-argument for what I think ought to be done.[^2] 
+argument for what I think ought to be done. "*My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, 
+when he has used them—as steps—to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it*".
 
-Suppose we have some model $$M_i: \boldsymbol{y}_i = f(\boldsymbol{x}_i \vert \boldsymbol{\theta}_i) + \varepsilon_i$$ where
-$$\varepsilon_i \sim \mathcal{N}(0,\sigma^2)$$ is an i.i.d. error term. The likelihood function for this model can be written as
+Suppose we have some model $$M_i: \boldsymbol{y}_j = f(\boldsymbol{x}_j \vert \boldsymbol{\theta}_i) + \varepsilon_j$$ for $$j=1,2,...,N$$ where
+$$\varepsilon_j \sim \mathcal{N}(0,\sigma^2)$$ is an i.i.d. error term. The likelihood function for this model can be written as
 
 $$
-L(\boldsymbol{\theta}_i) = \prod_{j=1}^N \frac{ e^{-\frac{(y_i - f(\boldsymbol{x}_i \vert \boldsymbol{\theta}_i))^2}{2\sigma^2}}}{\sqrt{2 \pi \sigma^2}},
+L(\boldsymbol{\theta}_i) = \prod_{j=1}^N \frac{ e^{-\frac{(y_j - f(\boldsymbol{x}_j \vert \boldsymbol{\theta}_i))^2}{2\sigma^2}}}{\sqrt{2 \pi \sigma^2}},
 $$
 
 or in log-likelihood terms:
@@ -132,7 +133,7 @@ $$
 $$
 
 where $$RSS$$ is the [residual sum of sqaures](https://en.wikipedia.org/wiki/Residual_sum_of_squares). 
-Now $$\sigma^2 \approx RRS_i/N = MSE_i$$ (the mean squared error) so this expression boils down to
+Now $$\sigma^2 \approx RSS_i/N = MSE_i$$ (the mean squared error) so this expression boils down to
 
 $$
 \ell(\boldsymbol{\theta}_i) = -\frac{N}{2} \ln(MSE_i) + \text{terms depending on }N.
@@ -144,10 +145,11 @@ $$
 BIC(M_i) = \frac{N}{2} \ln(MSE_i) + T_i \log(N).
 $$
 
-This offers a nice (more familiar?) way of writing \eqref{pm}, with the caveat that we still have to deal with the annoying
-presence of the $$T_i$$ term. Now in practice what I would do is the following: It is well known that the BIC asymptotically 
-is equivalent to leave-of-$$\nu(N)$$ cross-validation (see [this reference](https://robjhyndman.com/hyndsight/crossvalidation/)).
-Rather than weighing predictions by their $$BIC$$-score I thus propose weighing them by their cross-validated mean square error. 
+This offers a somewhat more appealing way of writing \eqref{pm}, with the caveat that we still have to deal with the annoying
+presence of the $$T_i$$ term. Now in practice what I would do is the following: It is well known that minimising the BIC asymptotically 
+is equivalent to leave-of-$$\nu$$ cross-validation for linear models (see [this reference](https://robjhyndman.com/hyndsight/crossvalidation/)).
+This suggests the following approach: for each model tune hyper-parameters using cross-validation.
+Rather than weighing predictions of the tuned models by their $$BIC$$-score, let's weigh them by their cross-validated mean square error. 
 Maybe something as simple as
 
 \begin{equation}\label{pm2}
@@ -157,7 +159,7 @@ p(M_i | \boldsymbol{y}) = \frac{ MSE_{i,cv}^{-1} }{ \sum_{j=1}^K MSE_{j,cv}^{-1}
 The benefits of this are as follows: (a) it is extremely simple to calculate, and (b) no unfair advantage is given to over-fitting
 models. 
 
-I welcome alternative suggestions to this intensely fascinating subject. 
+Again note that this argument is purely heuristic in nature. I welcome alternative suggestions to this intensely fascinating subject. 
 
 
 
@@ -166,7 +168,7 @@ I welcome alternative suggestions to this intensely fascinating subject.
 
 
 [^1]: For a more careful derivation I recommend Bhat and Kumar's [On the derivation of the Bayesian Information Criterion](https://faculty.ucmerced.edu/hbhat/BICderivation.pdf).
-[^2]: "*My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, when he has used them—as steps—to climb beyond them.*"
+
 
 
 
