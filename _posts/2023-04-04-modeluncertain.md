@@ -16,18 +16,18 @@ related_posts: false
 A well-known aphorism attributed to [George Box](https://en.wikipedia.org/wiki/George_E._P._Box) states that "*all models 
 are wrong, but some are useful*". This observation rings particularly true in systematic investing, where the price action
 governed by millions of non-cooperating players, ultimately is explained through some sort of reductionist supervised learning 
-problem. Nobody would seriously entertain the view that these models are *fundamental* or *expressively adequate* in nature, 
+problem. Nobody would seriously entertain the view that these models are *fundamental* or *expressively adequate*, 
 yet it is common practice to let just a single model guide the trading process based on some performance metric like the
 out-of-sample mean-squared error. This is potentially troubling given that a less accurate model need not be universally
 inferior in all of its predictions. Indeed, it is conceivable that some biases cancel each other out if only we marry the predictions made by various models (see e.g. the work by [Jennifer Hoeting](https://en.wikipedia.org/wiki/Jennifer_A._Hoeting)).
 This begs the question: how exactly do we combine said predictions? Intuitively, while simple linear averaging might work,
 the thought of attributing equal significance to models regardless of their level of performance is clearly distasteful. A somewhat subtler approach would be to weigh a prediction by the evidence of the model, and this is precisely what
 *Bayesian model averaging* sets out to do. In this piece I will provide an exegesis of this philosophy, and lay out what I
-consider to be serious obstacles and how to overcome them. 
+consider to be serious obstacles and how to potentially overcome them. 
 
 Let $$\boldsymbol{y}=(y_1, y_2, ..., y_N)^\intercal \in \mathbb{R}^{N}$$ be a vector of data observations, which we desire to model. 
-Furthermore, suppose we have $$K$$ competing models $$\mathbb{M} = \{M_1, M_2, ..., M_K \}$$ for $$\boldsymbol{y}$$, each of which is characterised by some vector $$\boldsymbol{\theta}_i = 
-(\theta_{i,1},\theta_{i,2}, ..., \theta_{i,T_i})^\intercal \in \boldsymbol{\Theta}_i \subseteq \mathbb{R}^{T_i}$$ of parameters.
+Furthermore, suppose we have $$K$$ competing models $$\mathbb{M} = \{M_1, M_2, ..., M_K \}$$ for $$\boldsymbol{y}$$, each of which is characterised by some specific vector of parameters: $$\boldsymbol{\theta}_i = 
+(\theta_{i,1},\theta_{i,2}, ..., \theta_{i,T_i})^\intercal \in \boldsymbol{\Theta}_i \subseteq \mathbb{R}^{T_i}$$.
 The candidate models could be [nested](https://www.theanalysisfactor.com/what-are-nested-models/)
 within the same super-model (e.g. all possible subsets of a multivariate linear regression), although this is *not* a requirement.  
 
@@ -54,7 +54,7 @@ will be overshadowed by the evidence leading to approximately identical posterio
 equation \eqref{bayes} provides a coherent framework for going from no empirical evidence, to looking at the data, to ultimately
 assigning an evidence based probability score to a given model. 
 
-Importantly, we can use our collection of posterior probabilities over the space of models $$\mathbb{M}$$ to get a sense
+Now we can use our collection of posterior probabilities over the space of models $$\mathbb{M}$$ to get a sense
 of "model free" (strictly speaking: model weighted) probabilities: e.g. if $$\Delta$$ is some quantity of interest then
 $$p(\Delta | \boldsymbol{y}) = \sum_{j=1}^K p(\Delta | M_j, \boldsymbol{y}) p(M_j | \boldsymbol{y}).$$ E.g. if we are in 
 the business of forecasting, we can get a model-averaged expectation of the next observation using the equation:
@@ -93,7 +93,7 @@ p(\boldsymbol{y} | M_i) &\propto \int_{\boldsymbol{\Theta}_i} e^{N \bar{\ell}(\b
 $$
 
 where the second line uses a [Taylor expansion](https://en.wikipedia.org/wiki/Taylor_series) around the MLE, and the third
-line executes the [multivariate Gaussian integral](https://en.wikipedia.org/wiki/Gaussian_integral#n-dimensional_and_functional_generalization). Following Schwarz this
+line executes the [multivariate Gaussian integral](https://en.wikipedia.org/wiki/Gaussian_integral#n-dimensional_and_functional_generalization). According to Schwarz this
 can be further simplified for large $$N$$ as
 
 $$
@@ -101,7 +101,7 @@ p(\boldsymbol{y} | M_i) \propto e^{\ell(\hat{\boldsymbol{\theta}}_i)} N^{-T_i/2}
 $$
 
 where $$\text{BIC}(M_i) \equiv -2 \ell(\hat{\boldsymbol{\theta}}_i)) + T_i \log(N)$$ is the [Bayesian Information Criterion](https://en.wikipedia.org/wiki/Bayesian_information_criterion) -
-a common measure used in identifying the "goodness of fit" of a model. Plugging this into \eqref{bayes} and taking a flat
+a common in-sample measure used in identifying the "goodness of fit" of a model balanced against its complexity. Plugging this into \eqref{bayes} and taking a flat
 prior on the model space $$\mathbb{M}$$ we finally arrive at the following expression for data-driven model probabilities: 
 
 \begin{equation}\label{pm}
@@ -115,25 +115,27 @@ Simply put: when all models have equal complexity we simply weigh their predicti
 If practitioners of data science are put off by Bayesian information criterions, likelihood functions etc. I wouldn't hold
 it against them. While these concepts are prevalent within statistics, they are less ubiquitous amongst computer scientists: 
 indeed, they may not even be well-defined for many of the machine learning models commonly employed today. 
-This suggests that further work is warranted: here, I'll present a [Wittgenstein's ladder](https://en.wikipedia.org/wiki/Wittgenstein%27s_ladder)-type
-argument for what I think ought to be done. "*My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, 
+Further work is therefore warranted. Here, I'll present a [Wittgenstein's ladder](https://en.wikipedia.org/wiki/Wittgenstein%27s_ladder)-type
+argument for what I think ought to be done. 
+
+> "*My propositions serve as elucidations in the following way: anyone who understands me eventually recognizes them as nonsensical, 
 when he has used them—as steps—to climb beyond them. He must, so to speak, throw away the ladder after he has climbed up it*".
 
-Suppose we have some model $$M_i: \boldsymbol{y}_j = f(\boldsymbol{x}_j \vert \boldsymbol{\theta}_i) + \varepsilon_j$$ for $$j=1,2,...,N$$ where
-$$\varepsilon_j \sim \mathcal{N}(0,\sigma^2)$$ is an i.i.d. error term. The likelihood function for this model can be written as
+Suppose we have some model $$M_i: \boldsymbol{y}_t = f(\boldsymbol{x}_t \vert \boldsymbol{\theta}_i) + \varepsilon_t$$ for $$t=1,2,...,N$$ where
+$$\varepsilon_t \sim \mathcal{N}(0,\sigma_i^2)$$ is an i.i.d. error term. The likelihood function for this model can be written as
 
 $$
-L(\boldsymbol{\theta}_i) = \prod_{j=1}^N \frac{ e^{-\frac{(y_j - f(\boldsymbol{x}_j \vert \boldsymbol{\theta}_i))^2}{2\sigma^2}}}{\sqrt{2 \pi \sigma^2}},
+L(\boldsymbol{\theta}_i) = \prod_{t=1}^N \frac{ e^{-\frac{(y_t - f(\boldsymbol{x}_t \vert \boldsymbol{\theta}_i))^2}{2\sigma_i^2}}}{\sqrt{2 \pi \sigma_i^2}},
 $$
 
 or in log-likelihood terms:
 
 $$
-\ell(\boldsymbol{\theta}_i) = - \frac{N}{2} \ln(2 \pi) - \frac{N}{2} \ln(\sigma^2) - \frac{1}{2\sigma_i^2} RSS_i,
+\ell(\boldsymbol{\theta}_i) = - \frac{N}{2} \ln(2 \pi) - \frac{N}{2} \ln(\sigma_i^2) - \frac{1}{2\sigma_i^2} RSS_i,
 $$
 
-where $$RSS$$ is the [residual sum of sqaures](https://en.wikipedia.org/wiki/Residual_sum_of_squares). 
-Now $$\sigma^2 \approx RSS_i/N = MSE_i$$ (the mean squared error) so this expression boils down to
+where $$RSS_i$$ is the [residual sum of sqaures](https://en.wikipedia.org/wiki/Residual_sum_of_squares). 
+Now $$\sigma_i^2 \approx RSS_i/N = MSE_i$$ (the mean squared error) so this expression boils down to
 
 $$
 \ell(\boldsymbol{\theta}_i) = -\frac{N}{2} \ln(MSE_i) + \text{terms depending on }N.
@@ -145,18 +147,18 @@ $$
 BIC(M_i) = \frac{N}{2} \ln(MSE_i) + T_i \log(N).
 $$
 
-This offers a somewhat more appealing way of writing \eqref{pm}, with the caveat that we still have to deal with the annoying
-presence of the $$T_i$$ term. Now in practice what I would do is the following: It is well known that minimising the BIC asymptotically 
+This offers a somewhat more appealing way of writing \eqref{pm}, with the caveat that we still have to deal with 
+quantifying model complexity (the $$T_i$$ penalty term). Now in practice what I would do instead is the following: It is well known that minimising the BIC asymptotically 
 is equivalent to leave-of-$$\nu$$ cross-validation for linear models (see [this reference](https://robjhyndman.com/hyndsight/crossvalidation/)).
 This suggests the following approach: for each model tune hyper-parameters using cross-validation.
 Rather than weighing predictions of the tuned models by their $$BIC$$-score, let's weigh them by their cross-validated mean square error. 
-Maybe something as simple as
+Something as simple as
 
 \begin{equation}\label{pm2}
-p(M_i | \boldsymbol{y}) = \frac{ MSE_{i,cv}^{-1} }{ \sum_{j=1}^K MSE_{j,cv}^{-1}}.
+p(M_i | \boldsymbol{y}) = \frac{ MSE_{i,cv}^{-1} }{ \sum_{j=1}^K MSE_{j,cv}^{-1}},
 \end{equation}
 
-The benefits of this are as follows: (a) it is extremely simple to calculate, and (b) no unfair advantage is given to over-fitting
+could do. The benefits of this are as follows: (a) it is extremely simple to calculate, and (b) no unfair advantage is given to over-fitting
 models. 
 
 Again note that this argument is purely heuristic in nature. I welcome alternative suggestions to this intensely fascinating subject. 
