@@ -26,8 +26,7 @@ research / portfolio construction). Strong proponent of the scientific process.
 
 ## important disclaimer
 
-Everything displayed on this website, including the blog, is my own private work. 
-Nothing whatsoever overlaps with the work I do professionally. No IP will ever be disseminated here. 
+Everything displayed on this website, including the blog, is my own private work produced outside of company time. No IP will ever be disseminated here. 
 Obviously nothing on this site constitutes trading advice. I do not accept any liability for trading losses you may incur. 
 
 
