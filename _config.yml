@@ -114,7 +114,7 @@
   # Blog
   # -----------------------------------------------------------------------------
 
-  blog_name: SEllersgaard # blog_name will be displayed in your blog page
+  blog_name: Blog # blog_name will be displayed in your blog page
   blog_nav_title: blog # your blog must have a title for it to be displayed in the nav bar
   blog_description: Quantitative Musings
   permalink: /blog/:year/:title/
@@ -334,9 +334,9 @@
   # Optional Features
   # -----------------------------------------------------------------------------
 
-  enable_google_analytics:    false  # enables google analytics
+  enable_google_analytics:    true  # enables google analytics
   enable_panelbear_analytics: false  # enables panelbear analytics
-  enable_google_verification: false  # enables google site verification
+  enable_google_verification: true  # enables google site verification
   enable_bing_verification:   false  # enables bing site verification
   enable_masonry:             true   # enables automatic project cards arangement
   enable_math:                true   # enables math typesetting (uses MathJax)
