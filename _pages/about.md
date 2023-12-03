@@ -29,11 +29,6 @@ research / portfolio construction). Strong proponent of the scientific process.
 Everything displayed on this website, including the blog, is my own private work produced outside of company time. No IP will ever be disseminated here. 
 Obviously nothing on this site constitutes trading advice. I do not accept any liability for trading losses you may incur. 
 
-## links
-
-1. [Google Scholar](https://scholar.google.com/citations?user=xFeOuz8AAAAJ&hl=en&oi=sra)
-2. [LinkedIn](https://www.linkedin.com/in/simon-ellersgaard/)
-3. [YouTube](https://www.youtube.com/@QuantInterviews)
 
 <!--
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
