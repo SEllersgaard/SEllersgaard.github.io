@@ -88,13 +88,13 @@ days' rebalancing
 scheme? The 
 figure below gives some intuition: the hedge portfolios are markedly more off-target, but not comically so.   
 
-{% include figure.html path="assets/img/hedge2.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+{% include figure.html path="assets/img/hedge2.PNG" class="img-fluid rounded z-depth-1" zoomable=true %}
 
 To uncover the relationship between hedge frequencies and hedge errors, it is instructive to run this experiment for 
 a range of hedge intervals, computing the standard deviation of the hedge error $$(\Pi_T - C_T)$$ in each case. In 
 the plot below I consider hedging once every $$\{1, 3, 5, 7, 14, 21, 42, 63 \}$$ days:
 
-{% include figure.html path="assets/img/hedge3.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+{% include figure.html path="assets/img/hedge3.PNG" class="img-fluid rounded z-depth-1" zoomable=true %}
 
 Based on this log-log plot we conclude that **the hedge error scales as one over the square root of the number of 
 hedges performed during the lifetime of the option** ($$R^2 \approx 1$$). I.e. when you quadruple your hedge 
