@@ -72,7 +72,7 @@ K = 110  # strike
 r = 0.01  # risk free rate
 ```
 
-If we use these paths to form $$M$$ self-financing portfolios rebalanced *once per business day*, we can 
+If we use these paths to form $$M$$ self-financing portfolios rebalanced *once per day*, we can 
 compare the terminal value of the hedge 
 portfolio  $$\Pi_T$$ 
 with the option pay-off $$C_T = \max\{S_T-K,0 \}$$. Doing so, I get the plot below. 
@@ -83,13 +83,16 @@ get the delta wrong around this point).
 
 {% include figure.html path="assets/img/hedge1.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 
-How badly does this deteriorate if we decrease the hedge frequency - e.g. by switching to a monthly rebalancing scheme? The figure below gives some intuition: the hedge portfolios are markedly more off-target, but not comically so.   
+How badly does this deteriorate if we decrease the hedge frequency - e.g. by switching to a 'once every 21 
+days' rebalancing 
+scheme? The 
+figure below gives some intuition: the hedge portfolios are markedly more off-target, but not comically so.   
 
 {% include figure.html path="assets/img/hedge2.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 
 To uncover the relationship between hedge frequencies and hedge errors, it is instructive to run this experiment for 
 a range of hedge intervals, computing the standard deviation of the hedge error $$(\Pi_T - C_T)$$ in each case. In 
-the plot below I consider hedging once every $$\{1, 3, 5, 7, 14, 21, 42, 63 \}$$ business days:
+the plot below I consider hedging once every $$\{1, 3, 5, 7, 14, 21, 42, 63 \}$$ days:
 
 {% include figure.html path="assets/img/hedge3.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 
