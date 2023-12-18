@@ -106,7 +106,7 @@
 
   google_analytics:  # your Google Analytics measurement ID (format: G-XXXXXXXXXX)
   panelbear_analytics:  # panelbear analytics site ID (format: XXXXXXXXX)
-    
+
   google_site_verification: qSJUmJp4-T1Lz9aVN5PqYy0RLyyLWAThSD6RTUty4S8 # your google-site-verification ID (Google Search Console)
   bing_site_verification:  # out your bing-site-verification ID (Bing Webmaster)
 
@@ -206,14 +206,18 @@
     - jekyll-diagrams
     - jekyll-email-protect
     - jekyll-feed
+    - jekyll-get-json
     - jekyll-imagemagick
+    - jekyll-jupyter-notebook
+    - jekyll-link-attributes
     - jekyll-minifier
     - jekyll-paginate-v2
     - jekyll/scholar
     - jekyll-sitemap
-    - jekyll-link-attributes
+    - jekyll-toc
     - jekyll-twitter-plugin
     - jemoji
+
 
   # Sitemap settings
   defaults:
